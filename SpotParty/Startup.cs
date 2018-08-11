@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using SpotParty.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SpotParty
 {
@@ -42,6 +43,23 @@ namespace SpotParty
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/login";
+                options.LogoutPath = "/signout";
+            })
+
+            .AddSpotify(options =>
+            {
+                options.ClientId = "0da34ebdd82345ba90aee2a3c7227ecc";
+                options.ClientSecret = "09b08320ca1a44118a7a87a4f6eb9ef5";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
